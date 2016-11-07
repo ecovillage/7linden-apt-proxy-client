@@ -1,0 +1,11 @@
+#!/bin/bash
+# Copyright 2016 Felix Wolfsteller
+# Released under the GPL
+
+# Create a link in /etc/network/if-up.d
+ln -s /opt/7linden-apt-proxy-client/bin/apt-proxy-client /etc/network/if-up.d/apt-proxy-client
+# Remove generated apt proxy configuration
+if [ -e /etc/apt/apt.conf.d/01proxy ]; then
+  rm /etc/apt/apt.conf.d/01proxy
+fi
+

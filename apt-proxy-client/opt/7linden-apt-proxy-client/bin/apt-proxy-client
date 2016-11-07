@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+#
+# apt proxy settings for 7 Linden
+configfile="/etc/7linden/apt-proxy.conf"
+
+typeset -A config
+get_config_values() {
+  if [ ! -e "$configfile" ]; then
+    # Init array with default values
+    config=(
+        [aptconf]="/etc/apt/apt.conf.d/01proxy"
+        [proxyurl]="http://192.168.0.105:3142"
+    )
+  else
+    # Read $configfile
+    while read line
+    do
+        if echo $line | grep -F = &>/dev/null
+        then
+            varname=$(echo "$line" | cut -d '=' -f 1)
+            config[$varname]=$(echo "$line" | cut -d '=' -f 2-)
+        fi
+    done < "$configfile"
+  fi
+}
+
+get_config_values
+
+if [ $(grep "^search" /etc/resolv.conf | cut -d ' ' -f2) = "7l" ]; then
+cat <<EOF > "${config[aptconf]}"
+Acquire::http { Proxy "${config[proxyurl]}"; };
+Acquire::https { Proxy "https://"; };
+EOF
+elif [ $(route | grep default) ]; then
+  # remove "$aptconf" if network connection persists and network is not 7l
+  rm "${config[aptconf]}"
+fi
+
+exit 0

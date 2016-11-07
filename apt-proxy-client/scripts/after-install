@@ -1,0 +1,14 @@
+#!/bin/bash
+# Copyright 2016 Holger Nassenstein
+# Released under the GPL
+
+# Set permissions of config file
+chmod 600 /etc/7linden/apt-proxy.conf
+
+# Create a link in /etc/network/if-up.d
+ln -s /opt/7linden-apt-proxy-client/bin/apt-proxy-client /etc/network/if-up.d/
+# Remove generatet apt proxy configuration
+if [ -e /etc/apt/apt.conf.d/01proxy ]; then
+  rm /etc/apt/apt.conf.d/01proxy
+fi
+
