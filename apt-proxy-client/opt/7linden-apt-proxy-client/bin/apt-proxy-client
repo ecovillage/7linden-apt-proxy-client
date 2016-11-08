@@ -11,6 +11,7 @@ get_config_values() {
     config=(
         [aptconf]="/etc/apt/apt.conf.d/01proxy"
         [proxyurl]="http://192.168.0.105:3142"
+        [CP_HOST]="192.168.0.1"
     )
   else
     # Read $configfile
@@ -25,16 +26,28 @@ get_config_values() {
   fi
 }
 
-get_config_values
+am_at_home() {
+  /usr/bin/ssh-keyscan -T1 "$CP_HOST" 2> /dev/null | sort | diff /opt/7linden-cp-login/data/host_keys -
+}
 
-if [ $(grep "^search" /etc/resolv.conf | cut -d ' ' -f2) = "7l" ]; then
+gen_proxy_conf () {
 cat <<EOF > "${config[aptconf]}"
 Acquire::http { Proxy "${config[proxyurl]}"; };
 Acquire::https { Proxy "https://"; };
 EOF
-elif [ $(route | grep default) ]; then
+}
+
+get_config_values
+
+if [ $(grep "^search" /etc/resolv.conf | cut -d ' ' -f2) = "7l" ] 2>/dev/null; then
+  gen_proxy_conf
+elif [ am_at_home ]; then
+  gen_proxy_conf
+elif [ $(route | grep "^default" | cut -d ' ' -f1) = "default" ] 2>/dev/null; then
   # remove "$aptconf" if network connection persists and network is not 7l
   rm "${config[aptconf]}"
 fi
 
+
 exit 0
+

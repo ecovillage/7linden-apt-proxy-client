@@ -15,5 +15,5 @@ fpm -s dir\
     --license "GPLv3"\
     --maintainer "h.nassenstein@mailbox.org"\
     --after-install scripts/after-install\
+    --after-remove scripts/after-remove\
     etc opt
-# --after-install --after-remove

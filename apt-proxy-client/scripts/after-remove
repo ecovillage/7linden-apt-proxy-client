@@ -1,0 +1,11 @@
+#!/bin/bash
+# Copyright 2016 Holger Nassenstein
+# Released under the GPL
+
+# Remove the link in /etc/network/if-up.d
+rm /etc/network/if-up.d/apt-proxy-client
+# Remove generated apt proxy configurtion
+if [ -e /etc/apt/apt.conf.d/01proxy ]; then
+  rm /etc/apt/apt.conf.d/01proxy
+fi
+
