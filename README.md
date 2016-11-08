@@ -2,9 +2,7 @@
 
 Create a .deb package suitable for \*buntu, Debian, Linux Mint.
 
-## Scripts to login to captive portal (pfsense).
-
-### /opt/7linden-apt-proxy-client/bin/apt-proxy-client
+## /opt/7linden-apt-proxy-client/bin/apt-proxy-client
 
 Script checks whether we are at home (by grepping 7 Linden network name in /etc/resolv.conf).
 
