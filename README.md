@@ -40,3 +40,4 @@ You are welcome, drop me a line and issue a Pull Request.
  * be more defensive
  * be more defensive, 2: escaping
  * set proper timeouts for the wget-call
+
