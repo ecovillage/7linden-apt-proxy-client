@@ -7,8 +7,13 @@ chmod 600 /etc/7linden/apt-proxy.conf
 
 # Create a link in /etc/network/if-up.d
 ln -s /opt/7linden-apt-proxy-client/bin/apt-proxy-client /etc/network/if-up.d/
-# Remove generatet apt proxy configuration
+# Remove previously generated apt proxy configuration
 if [ -e /etc/apt/apt.conf.d/01proxy ]; then
   rm /etc/apt/apt.conf.d/01proxy
 fi
+# execute script to generate new proxy configuration
+if [ $(/etc/network/if-up.d/apt-proxy-client) ]; then
+  /usr/bin/apt update
+fi
+
 
