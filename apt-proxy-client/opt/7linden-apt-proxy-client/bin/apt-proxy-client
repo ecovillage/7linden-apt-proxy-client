@@ -26,10 +26,15 @@ get_config_values() {
   fi
 }
 
+fifo="/tmp/$(basename $0)-$$"
 am_at_home() {
-  /usr/bin/ssh-keyscan -T1 "${config[CP_HOST]}" 2> /dev/null | sort | \
-  diff /opt/7linden-cp-login/data/host_keys - > /dev/null 2>&1
-  return $?
+  mkfifo "$fifo"
+  grep "ssh-rsa" /opt/7linden-at-home/data/host_keys 2> /dev/null > "$fifo" &
+  /usr/bin/ssh-keyscan -T1 -t rsa "${config[CP_HOST]}" 2> /dev/null | sort | \
+  diff "$fifo" - > /dev/null 2>&1
+  ret=$?
+  rm "$fifo"
+  return "$ret"
 }
 
 gen_proxy_conf () {
@@ -43,7 +48,8 @@ get_config_values
 
 if [ $(grep "^search" /etc/resolv.conf | cut -d ' ' -f2) = "7l" ] 2>/dev/null; then
   gen_proxy_conf
-elif am_at_home; then
+#elif am_at_home; then
+elif $(/opt/7linden-at-home/bin/7linden-at-home); then
   gen_proxy_conf
 elif [ $(route | grep "^default" | cut -d ' ' -f1) = "default" ] 2>/dev/null; then
   # remove "$aptconf" if network connection persists and network is not 7l
