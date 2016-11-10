@@ -2,6 +2,7 @@
 #
 #
 # apt proxy settings for 7 Linden
+
 configfile="/etc/7linden/apt-proxy.conf"
 
 typeset -A config
@@ -26,12 +27,6 @@ get_config_values() {
   fi
 }
 
-am_at_home() {
-  grep "$(/usr/bin/ssh-keyscan -T1 -t rsa ${config[CP_HOST]} 2> /dev/null | sort)" \
-  /opt/7linden-at-home/data/host_keys > /dev/null 2>&1
-  return "$?"
-}
-
 gen_proxy_conf () {
 cat <<EOF > "${config[aptconf]}"
 Acquire::http { Proxy "${config[proxyurl]}"; };
@@ -40,20 +35,21 @@ EOF
 }
 
 get_config_values
-ret=1
 
-if [ $(grep "^search" /etc/resolv.conf | cut -d ' ' -f2) = "7l" ] 2>/dev/null; then
+if [ "$(basename $0)" = "install_proxy-conf_script" ]; then
+  # if called as 'install_proxy-conf_script' install proxy configration anyway
   gen_proxy_conf
-  ret=0
-#elif am_at_home; then
+elif [ $(grep "^search" /etc/resolv.conf | cut -d ' ' -f2) = "7l" ] 2>/dev/null; then
+  # install proxy configuration if /etc/resolv.conf contains line 'search 7l' 
+  gen_proxy_conf
 elif $(/opt/7linden-at-home/bin/7linden-at-home); then
+  # install proxy configuration if host key matching is successfull
   gen_proxy_conf
-  ret=0
 elif [ $(route | grep "^default" | cut -d ' ' -f1) = "default" ] 2>/dev/null; then
   # remove "$aptconf" if network connection persists and network is not 7l
   rm "${config[aptconf]}" 2>/dev/null
 fi
 
 
-exit $ret
+exit 0
 
