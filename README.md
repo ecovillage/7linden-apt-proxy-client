@@ -21,7 +21,7 @@ which do just that.
 
 ### Package building
 
-To build the package you need to have [FPM](https://github.com/jordansissel/fpm) in the path and execute `create.sh`.
+To build the package you need to have [FPM](https://github.com/jordansissel/fpm) in the path and execute `create.sh`.  packages version number is taken from the `VERSION` file.
 
 ### License
 
@@ -31,11 +31,5 @@ Released under the [GPLv3](LICENSE) included as LICENSE file.
 
 ### Contribute
 
-You are welcome, drop me a line and issue a Pull Request.
-
-### Known TODOs
-
- * be more defensive
- * be more defensive, 2: escaping
- * set proper timeouts for the wget-call
+You are welcome, drop us a line and issue a Pull Request.
 
