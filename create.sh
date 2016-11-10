@@ -1,6 +1,6 @@
 #!/bin/bash
 # Copyright 2016 Holger Nassenstein
-# Released under the GPL
+# Released under the GPLv3+
 
 # Create 7linden-apt-proxy-client**.deb
 
@@ -9,7 +9,7 @@ fpm -s dir\
     -v `cat VERSION`\
     -a all\
     --name "7linden-apt-proxy-client"\
-    --description "Configure apt proxy clients for 7 Linden lan"\
+    --description "(Un-)configure apt proxy client configuration for 7 Linden LAN"\
     --directories opt/7linden-apt-proxy-client\
     --depends bash\
     --depends "7linden-at-home (>= 0.1.4)"\

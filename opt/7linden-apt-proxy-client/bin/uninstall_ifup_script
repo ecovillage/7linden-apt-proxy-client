@@ -1,11 +1,14 @@
 #!/bin/bash
-# Copyright 2016 Felix Wolfsteller
-# Released under the GPL
+# Copyright 2016 Felix Wolfsteller, Holger Nassenstein
+# Released under the GPLv3+
+
+# Remove symlink in /etc/network/if-up.d to NOT check for 7lindeniness
+# on interface startup.
 
 # Remove the link in /etc/network/if-up.d
 rm /etc/network/if-up.d/apt-proxy-client
+
 # Remove generated apt proxy configurtion
 if [ -e /etc/apt/apt.conf.d/01proxy ]; then
   rm /etc/apt/apt.conf.d/01proxy
 fi
-

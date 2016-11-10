@@ -1,7 +1,9 @@
 #!/bin/bash
-#
-#
-# apt proxy settings for 7 Linden
+# Copyright 2016 Holger Nassenstein
+# Released under the GPLv3+
+
+# Install apt proxy settings for 7 Linden depending on "home-check".
+# The proxy configuration ins done in /etc/7linden/apt-proxy.conf .
 
 configfile="/etc/7linden/apt-proxy.conf"
 
