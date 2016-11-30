@@ -25,7 +25,19 @@ which do just that - and the first is executed at package installation time.
 
 ### Package building
 
-To build the package you need to have [FPM](https://github.com/jordansissel/fpm) in the path and execute `create.sh`.  packages version number is taken from the `VERSION` file.
+To build the package you need to have [FPM](https://github.com/jordansissel/fpm) in the path and execute `create.sh`.  Packages version number is taken from the `VERSION` file.
+
+### Package release
+
+To ease integration with other tools, a version bump should be tagged with the current version number.
+As the packages version is inferred by `create.sh` from the `VERSION` file, this is the recommended behaviour:
+
+  - Improve code.
+  - Raise `VERSION` (mind semantic versioning).
+  - Commit, tag and push the stuff:
+    git add VERSION; git commit -m "raise VERSION to `cat VERSION`"
+    git tag -a "`cat VERSION`" -m "`cat VERSION`"
+    git push --tags
 
 ### License
 
